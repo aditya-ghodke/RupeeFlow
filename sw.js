@@ -1,5 +1,5 @@
-﻿const CACHE_NAME = "rupeeflow-cache-v1";
-const APP_FILES = ["./","./index.html","./style.css","./script.js","./manifest.json"];
+﻿const CACHE_NAME = "rupeeflow-cache-v2";
+const APP_FILES = ["./","./index.html","./style.css","./script.js","./manifest.json","./cloud-sync.js"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_FILES)).then(()=>self.skipWaiting()));
 });
@@ -15,3 +15,4 @@ self.addEventListener("fetch",event=>{
     return response;
   }).catch(()=>caches.match("./index.html"))));
 });
+
