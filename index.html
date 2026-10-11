@@ -1,0 +1,104 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c111c">
+  <meta name="description" content="RupeeFlow — your private personal finance dashboard.">
+  <title>RupeeFlow — Personal Finance</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="RupeeFlow home">
+        <span class="brand-icon">₹</span>
+        <span>Rupee<span class="brand-accent">Flow</span><small>PERSONAL FINANCE</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="navigation">
+        <a class="nav-link active" href="#dashboard"><span>◫</span> Overview</a>
+        <a class="nav-link" href="#transactions"><span>⇄</span> Transactions</a>
+        <a class="nav-link" href="#analytics"><span>▥</span> Analytics</a>
+        <a class="nav-link" href="#planning"><span>◎</span> Budget & Goals</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-card"><span class="privacy-dot"></span><div><b>Your money, your data</b><p>Stored locally in this browser.</p></div></div>
+        <button id="exportJsonSide" class="side-action">↓ &nbsp; Back up my data</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">YOUR FINANCIAL SPACE</div><h1 id="pageTitle">Overview</h1></div>
+        <div class="top-actions">
+          <span class="local-badge"><span class="privacy-dot"></span> Local & private</span>
+          <button class="button primary" id="addTop">＋ Add transaction</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="section">
+        <div class="welcome-row"><div><h2>Your money at a glance.</h2><p>Understand your cash flow and make your next move count.</p></div><label class="month-picker">MONTH <input id="monthPicker" type="month"></label></div>
+        <div class="stats-grid">
+          <article class="stat-card balance-card"><div class="stat-head"><span>Net balance</span><span class="stat-icon">₹</span></div><div id="balanceValue" class="stat-value">₹0</div><div class="stat-foot">All-time income minus expenses</div></article>
+          <article class="stat-card"><div class="stat-head"><span>Income this month</span><span class="stat-icon green">↗</span></div><div id="incomeValue" class="stat-value">₹0</div><div class="stat-foot">Money coming in</div></article>
+          <article class="stat-card"><div class="stat-head"><span>Expenses this month</span><span class="stat-icon red">↘</span></div><div id="expenseValue" class="stat-value">₹0</div><div class="stat-foot">Money going out</div></article>
+          <article class="stat-card"><div class="stat-head"><span>Savings this month</span><span class="stat-icon violet">✳</span></div><div id="savingsValue" class="stat-value">₹0</div><div id="savingsFoot" class="stat-foot">Income minus expenses</div></article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Cash flow</h3><p>Income vs expenses over the last six months</p></div><span class="panel-tag">6 MONTHS</span></div><div id="cashFlowChart" class="cash-chart"></div><div class="chart-legend"><span><i class="legend-dot income-dot"></i> Income</span><span><i class="legend-dot expense-dot"></i> Expenses</span></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Monthly budget</h3><p>Keep spending within your plan</p></div><button id="budgetQuick" class="text-button">Set budget ↗</button></div><div class="budget-summary"><div id="budgetSpent" class="big-number">₹0</div><div id="budgetCaption" class="muted">spent this month</div></div><div class="progress-track"><div id="budgetProgress" class="progress-fill"></div></div><div class="budget-bottom"><span id="budgetLeft">Set a monthly budget</span><span id="budgetPercent">—</span></div><div class="mini-divider"></div><div class="panel-heading compact"><div><h3>Top spending categories</h3></div></div><div id="topCategories" class="category-list"></div></article>
+        </div>
+
+        <article class="panel recent-panel"><div class="panel-heading"><div><h3>Recent transactions</h3><p>Your latest money movements</p></div><a href="#transactions" class="text-button">View all ↗</a></div><div id="recentTransactions" class="transaction-list"></div></article>
+      </section>
+
+      <section id="transactions" class="section">
+        <div class="section-intro"><div><h2>Transactions</h2><p>Every rupee accounted for, in one place.</p></div><button class="button primary" id="addTransaction">＋ Add transaction</button></div>
+        <div class="panel filters-panel"><div class="filter-grid"><label class="search-field">⌕ <input id="searchInput" type="search" placeholder="Search transactions..."></label><select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option><option value="income">Income</option><option value="expense">Expense</option></select><select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select><input id="dateFilter" type="month" aria-label="Filter by month"><button id="clearFilters" class="button secondary">Reset</button></div></div>
+        <article class="panel table-panel"><div class="table-heading"><div><h3>All transactions</h3><p id="transactionCount">0 records</p></div><button id="exportCsv" class="button secondary">↓ Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="amount-cell">AMOUNT</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div><div id="emptyTransactions" class="empty-state"><span>◌</span><h3>No transactions found</h3><p>Add your first transaction or change your filters.</p><button class="button primary" id="emptyAdd">＋ Add transaction</button></div></article>
+      </section>
+
+      <section id="analytics" class="section">
+        <div class="section-intro"><div><h2>Analytics</h2><p>Spot patterns and make smarter financial decisions.</p></div><label class="month-picker">MONTH <input id="analyticsMonth" type="month"></label></div>
+        <div class="stats-grid analytics-stats"><article class="stat-card"><div class="stat-head"><span>Income</span><span class="stat-icon green">↗</span></div><div id="analyticsIncome" class="stat-value">₹0</div><div class="stat-foot">Selected month</div></article><article class="stat-card"><div class="stat-head"><span>Expenses</span><span class="stat-icon red">↘</span></div><div id="analyticsExpense" class="stat-value">₹0</div><div class="stat-foot">Selected month</div></article><article class="stat-card"><div class="stat-head"><span>Savings rate</span><span class="stat-icon violet">%</span></div><div id="analyticsRate" class="stat-value">0%</div><div class="stat-foot">Of monthly income</div></article><article class="stat-card"><div class="stat-head"><span>Transactions</span><span class="stat-icon">#</span></div><div id="analyticsCount" class="stat-value">0</div><div class="stat-foot">Selected month</div></article></div>
+        <div class="content-grid"><article class="panel"><div class="panel-heading"><div><h3>Expense breakdown</h3><p>Where your money goes</p></div></div><div id="expenseBreakdown" class="breakdown"></div></article><article class="panel"><div class="panel-heading"><div><h3>Spending insights</h3><p>Based on your selected month</p></div></div><div id="insights" class="insights"></div></article></div>
+      </section>
+
+      <section id="planning" class="section">
+        <div class="section-intro"><div><h2>Budget & goals</h2><p>Give your money a purpose before you spend it.</p></div></div>
+        <div class="content-grid"><article class="panel planning-card"><div class="panel-heading"><div><h3>Monthly budget</h3><p>A limit for all expense categories combined</p></div><span class="stat-icon green">₹</span></div><div id="planningBudget" class="big-number">Not set</div><p id="planningBudgetText" class="muted">Set a monthly budget to track your spending.</p><div class="progress-track"><div id="planningBudgetProgress" class="progress-fill"></div></div><button id="budgetEdit" class="button secondary full-button">Set / edit budget</button></article><article class="panel planning-card"><div class="panel-heading"><div><h3>Savings goal</h3><p>Make progress toward something meaningful</p></div><span class="stat-icon violet">◎</span></div><div id="goalName" class="goal-name">My savings goal</div><div id="goalSaved" class="big-number">₹0</div><p id="goalTargetText" class="muted">Target: ₹0</p><div class="progress-track"><div id="goalProgress" class="progress-fill violet-fill"></div></div><div id="goalPercent" class="budget-bottom"></div><button id="goalEdit" class="button secondary full-button">Edit savings goal</button></article></div>
+        <article class="panel data-panel"><div class="panel-heading"><div><h3>Your data</h3><p>Download a backup or restore your records whenever you need.</p></div></div><div class="data-actions"><div><b>Export backup</b><p>Save all transactions, budget, and savings goal as JSON.</p></div><button id="exportJson" class="button secondary">↓ Download JSON</button></div><div class="data-actions"><div><b>Restore backup</b><p>Import a previous RupeeFlow JSON backup. This replaces current app data.</p></div><label class="button secondary file-button">↑ Import JSON<input id="importJson" type="file" accept=".json,application/json" hidden></label></div><div class="data-actions"><div><b>Export spreadsheet</b><p>Download transactions in CSV format for spreadsheet apps.</p></div><button id="exportCsvPlan" class="button secondary">↓ Download CSV</button></div><p class="privacy-note">Privacy note: your finance data stays in this browser unless you export or share it. Clearing browser data may erase it. Keep backups somewhere safe.</p></article>
+      </section>
+
+      <footer class="footer"><span>₹ RupeeFlow</span><span>Built for clarity. Designed for your goals.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="transactionDialog" class="modal">
+    <form id="transactionForm">
+      <div class="modal-heading"><div><div class="eyebrow">MONEY MOVEMENT</div><h2 id="transactionDialogTitle">Add transaction</h2></div><button type="button" class="close-button" data-close="transactionDialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="transactionId">
+      <label>Description<input id="transactionTitle" maxlength="90" placeholder="e.g. Freelance payment" required></label>
+      <div class="form-row"><label>Amount (₹)<input id="transactionAmount" type="number" min="0.01" step="0.01" placeholder="0.00" required></label><label>Type<select id="transactionType"><option value="expense">Expense</option><option value="income">Income</option></select></label></div>
+      <div class="form-row"><label>Category<select id="transactionCategory" required></select></label><label>Date<input id="transactionDate" type="date" required></label></div>
+      <label>Note (optional)<input id="transactionNote" maxlength="160" placeholder="Add a short note"></label>
+      <p id="formError" class="form-error" role="alert"></p>
+      <div class="modal-actions"><button type="button" class="button secondary" data-close="transactionDialog">Cancel</button><button class="button primary" type="submit">Save transaction</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="budgetDialog" class="modal">
+    <form id="budgetForm"><div class="modal-heading"><div><div class="eyebrow">SPENDING PLAN</div><h2>Monthly budget</h2></div><button type="button" class="close-button" data-close="budgetDialog">×</button></div><label>Budget amount (₹)<input id="budgetAmount" type="number" min="0" step="0.01" placeholder="e.g. 15000" required></label><p class="muted">Enter 0 to remove the budget.</p><div class="modal-actions"><button type="button" class="button secondary" data-close="budgetDialog">Cancel</button><button class="button primary">Save budget</button></div></form>
+  </dialog>
+
+  <dialog id="goalDialog" class="modal">
+    <form id="goalForm"><div class="modal-heading"><div><div class="eyebrow">YOUR NEXT MILESTONE</div><h2>Savings goal</h2></div><button type="button" class="close-button" data-close="goalDialog">×</button></div><label>Goal name<input id="goalNameInput" maxlength="70" placeholder="e.g. New laptop" required></label><label>Target amount (₹)<input id="goalTargetInput" type="number" min="0" step="0.01" required></label><label>Amount already saved (₹)<input id="goalSavedInput" type="number" min="0" step="0.01" required></label><div class="modal-actions"><button type="button" class="button secondary" data-close="goalDialog">Cancel</button><button class="button primary">Save goal</button></div></form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
